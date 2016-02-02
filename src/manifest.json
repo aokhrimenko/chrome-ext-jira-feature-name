@@ -9,7 +9,7 @@
   }],
 
   "browser_action": {
-    "default_title": "Test Extension",
+    "default_title": "Convert JIRA issue to feature name",
     "default_popup": "popup.html"
   },
 
