@@ -6,13 +6,13 @@
             body{
                 font-family: Arial;
                 margin: 0;
-                /*width: 100%;*/
+                font-size: 1.6em;
+                width: 620px;
             }
 
             .container {
                 padding: 20px 0;
-                font-size: 1.6em;
-                width: 620px;
+                width: 100%;
             }
 
             .container .name {
@@ -47,9 +47,13 @@
                 position: absolute;
                 left: -999999;
             }
+            .error {
+                display: none;
+            }
         </style>
     </head>
     <body>
+        <div class="error">JIRA issue not found on the page</div>
         <input id="copy-box" type="text">
     </body>
 </html>

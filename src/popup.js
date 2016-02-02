@@ -6,10 +6,11 @@ $(document).ready(function () {
         var tab = tabs[0],
             url = tab.url;
 
-
         chrome.tabs.sendMessage(tab.id, {text: 'jira_issue_name_request'}, function(response) {
-            if (length in response && response.length) {
+            if (response && response.length) {
                 renderNames(response);
+            } else {
+                $('.error').show();
             }
         });
 
