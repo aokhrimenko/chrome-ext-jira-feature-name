@@ -1,26 +1,46 @@
 
 $(document).ready(function () {
-    var backgroundPage = chrome.extension.getBackgroundPage(),
-        names = backgroundPage.getNames();
+    // var backgroundPage = chrome.extension.getBackgroundPage();
 
-    if (!names.length) {
-        return;
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        var tab = tabs[0],
+            url = tab.url;
+
+
+        chrome.tabs.sendMessage(tab.id, {text: 'jira_issue_name_request'}, function(response) {
+            if (length in response && response.length) {
+                renderNames(response);
+            }
+        });
+
+    });
+
+
+    var $input = $('#copy-box'), $body = $('body');
+
+    $('body').on('click', '.copy', function() {
+        var $btn = $(this);
+
+        $input
+            .val($btn.siblings('.name').text())
+            .select();
+        document.execCommand('copy');
+
+        $btn.addClass('copied').text('ok');
+        setTimeout(function(){
+            $btn.removeClass('copied').text('copy');
+        }, 750);
+    });
+
+    function renderNames(data) {
+        for (var i = 0; i < data.length; i++) {
+            var $item = $('<div class="container">'
+                + '<div class="name"></div>'
+                + '<div class="copy">Copy</div>'
+                + '</div>');
+            $item.find('.name').text(data[i]);
+            $body.append($item);
+        }
     }
 
-    for (var i = 0; i < names.length; i++) {
-        var feature = issueToFeature(names[i].key, names[i].summary);
-        console.log(feature);
-    }
 });
-
-
-function issueToFeature(key, summary) {
-    // ' "   =  remove
-    // [^\w] = _
-
-    summary = summary.replace(/['"]/g, '');
-    summary = summary.replace(/\W/g, '_');
-    summary = summary.replace(/_{2,}/g, '_');
-
-    return key + '_' + summary;
-}

@@ -6,7 +6,6 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     if (msg.text === 'jira_issue_name_request') {
         // Call the specified callback, passing
         // the web-page's DOM content as argument
-        console.log('sending data');
         var data = [],
         	keyVal = document.getElementById('key-val'), 
         	parentIssue = document.getElementById('parent_issue_summary'), 
@@ -14,18 +13,30 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 
         if (parentIssue) {
         	var parts = /^([A-Z]+-\d+)\s+(.*)$/.exec(parentIssue.innerText);
-        	console.log('parts', parts);
         	if (parts && parts.length == 3) {
-	        	data.push({key: parts[1], summary: parts[2]});
+        		data.push(
+        			issueToFeature(parts[1], parts[2])
+    			);
     		}
         }
 
         if (keyVal && summaryVal) {
-        	data.push({key: keyVal.innerText,  summary: summaryVal.innerText});
+        	data.push(
+        		issueToFeature(keyVal.innerText, summaryVal.innerText)
+    		);
         }
-
-        console.log('data', data);
 
         sendResponse(data);
     }
 });
+
+function issueToFeature(key, summary) {
+    // ' "   =  remove
+    // [^\w] = _
+
+    summary = summary.replace(/['"]/g, '');
+    summary = summary.replace(/\W/g, '_');
+    summary = summary.replace(/_{2,}/g, '_');
+
+    return key + '_' + summary;
+}
