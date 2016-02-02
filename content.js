@@ -1,4 +1,6 @@
-// Listen for messages
+/**
+ * Content script is run in the context of web pages
+ */
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     // If the received message has the expected format...
     if (msg.text === 'jira_issue_name_request') {
@@ -11,12 +13,18 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         	summaryVal = document.getElementById('summary-val');
 
         if (parentIssue) {
-        	data.push(parentIssue.innerText);
+        	var parts = /^([A-Z]+-\d+)\s+(.*)$/.exec(parentIssue.innerText);
+        	console.log('parts', parts);
+        	if (parts && parts.length == 3) {
+	        	data.push({key: parts[1], summary: parts[2]});
+    		}
         }
 
         if (keyVal && summaryVal) {
-        	data.push(keyVal.innerText + ' ' + summaryVal.innerText);
+        	data.push({key: keyVal.innerText,  summary: summaryVal.innerText});
         }
+
+        console.log('data', data);
 
         sendResponse(data);
     }
