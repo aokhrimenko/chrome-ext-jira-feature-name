@@ -12,31 +12,14 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         	summaryVal = document.getElementById('summary-val');
 
         if (parentIssue) {
-        	var parts = /^([A-Z]+-\d+)\s+(.*)$/.exec(parentIssue.innerText);
-        	if (parts && parts.length == 3) {
-        		data.push(
-        			issueToFeature(parts[1], parts[2])
-    			);
-    		}
+			data.push(parentIssue.innerText);
         }
 
         if (keyVal && summaryVal) {
-        	data.push(
-        		issueToFeature(keyVal.innerText, summaryVal.innerText)
-    		);
+        	data.push(keyVal.innerText + ' ' + summaryVal.innerText);
         }
 
         sendResponse(data);
     }
 });
 
-function issueToFeature(key, summary) {
-    // ' "   =  remove
-    // [^\w] = _
-
-    summary = summary.replace(/['"]/g, '');
-    summary = summary.replace(/\W/g, '_');
-    summary = summary.replace(/_{2,}/g, '_');
-
-    return key + '_' + summary;
-}

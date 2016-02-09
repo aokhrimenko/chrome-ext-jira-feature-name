@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="stylesheet" href="options.css">
+    <script type="text/javascript" src="feature.js"></script>
+    <script type="text/javascript" src="options.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+</head>
+
+<body>
+    <div class="sectionHeader">Live preview</div>
+    <div class="wide" id="preview"></div>
+
+    <div class="sectionHeader">General</div>
+    <div class="property">
+        <label class="key" for="maxLength">Max length</label>
+        <input class="value" id="maxLength" type="number" min="20" max="100" value="100">
+    </div>
+    <div class="property">
+        <label class="key" for="delimiter">Key/Summary Delimiter</label>
+        <select id="delimiter" class="value">
+            <option value="-">Dash "-"</option>
+            <option value="_">Underscore "_"</option>
+            <option value=".">Dot "."</option>
+        </select>
+    </div>
+
+    <div class="sectionHeader">Key</div>
+    <div class="property">
+        <label class="key" for="keyCase">Case / Visibility</label>
+        <select id="keyCase" class="value">
+            <option value="hide">Hide</option>
+            <option value="lower">Lower case</option>
+            <option value="upper">Upper case</option>
+            <option value="capitalize">Capitalize</option>
+        </select>
+    </div>
+    <div class="property">
+        <label class="key" for="keyDelimiter">Delimiter</label>
+        <select id="keyDelimiter" class="value">
+            <option value="-">Dash "-"</option>
+            <option value="_">Underscore "_"</option>
+            <option value=".">Dot "."</option>
+            <option value="">None</option>
+        </select>
+    </div>
+
+    <div class="sectionHeader">Summary</div>
+    <div class="property">
+        <label class="key" for="summaryCase">Case / Visibility</label>
+        <select id="summaryCase" class="value">
+            <option value="hide">Hide</option>
+            <option value="lower">Lower case</option>
+            <option value="upper">Upper case</option>
+            <option value="capitalize">Capitalize</option>
+        </select>
+    </div>
+    <div class="property">
+        <label class="key" for="summaryDelimiter">Delimiter</label>
+        <select id="summaryDelimiter" class="value">
+            <option value="-">Dash "-"</option>
+            <option value="_">Underscore "_"</option>
+            <option value=".">Dot "."</option>
+            <option value="">None</option>
+        </select>
+    </div>
+</body>
+</html>
