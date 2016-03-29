@@ -5,10 +5,6 @@ body {
     width: 400px;
 }
 
-.container {
-
-}
-
 .entry {
     padding: 5px;
     width: 100%;
@@ -25,9 +21,8 @@ body {
     vertical-align: bottom;
 }
 
-.entry .copy {
+.button {
     display: inline-block;
-    width: 50px;
     color: rgba(255,255,255,0.87);
     background-color: rgba(16,108,200,0.77);
     border-radius: 3px;
@@ -41,10 +36,19 @@ body {
     box-shadow: 0 2px 5px 0 rgba(0,0,0,.26);
 }
 
-.entry .copy:hover{
+.button:hover{
     background-color: rgba(16,108,200,1);
 }
-.entry .copy.copied {
+
+#reload-button {
+    width: 85px;
+}
+
+.copy {
+    width: 50px;
+}
+
+.copy.copied {
     background-color: rgba(32, 190, 97, 1);
     color: rgba(255,255,255,1);
 }
@@ -54,6 +58,17 @@ body {
     position: absolute;
     left: -999999px;
 }
-.error {
+
+#error {
     display: none;
+    text-align: center;
+}
+
+#error .title {
+    padding: 0;
+    border-bottom: black dotted 1px;
+}
+
+#error .text {
+    padding: 10px;
 }

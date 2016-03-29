@@ -69,18 +69,6 @@ Feature = {
 
             return value;
         }
-
-        function renderNames(data) {
-            for (var i = 0; i < data.length; i++) {
-                var $item = $('<div class="entry">'
-                    + '<div class="name"></div>'
-                    + '<div class="copy">Copy</div>'
-                    + '</div>');
-                $item.find('.name').text(data[i]);
-                $body.append($item);
-            }
-        }
-
     },
 
     updateOptions: function (key, value, callback) {

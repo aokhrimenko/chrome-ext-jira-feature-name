@@ -1,14 +1,17 @@
 <html>
     <head>
-        <script type="text/javascript" src="jquery-1.12.0.min.js"></script>
         <script type="text/javascript" src="feature.js"></script>
         <script type="text/javascript" src="popup.js"></script>
         <link rel="stylesheet" type="text/css" href="popup.css">
     </head>
     <body>
-        <div class="error">JIRA issue not found on the page</div>
+        <div id="error">
+            <div class="title">JIRA issue not found</div>
+            <div class="text">If you are sure it is there please reload the page</div>
+            <div id="reload-button" class="button">reload</div>
+        </div>
         <input id="copy-box" type="text">
 
-        <div class="container"></div>
+        <div id="container"></div>
     </body>
 </html>

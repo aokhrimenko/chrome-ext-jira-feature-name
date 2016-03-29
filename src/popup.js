@@ -4,75 +4,65 @@ var JiraToFeature = function() {
         WRONG_VERSION = 1,
         EMPTY = 2,
         self = this,
-        container = document.getElementById('container');
+        containerBlock = document.getElementById('container'),
+        errorBlock = document.getElementById('error'),
+        copyBox = document.getElementById('copy-box'),
+        reloadButton = document.getElementById('reload-button')
+    ;
 
-    queryContentPage();
-    bindEvents();
+    self.init = function() {
+        errorBlock.style.display = 'none';
+        containerBlock.style.display = 'none';
+        containerBlock.innerHTML = '';
 
-    function bindEvents() {
-        $('body').on('click', '.copy', function() {
-            var $btn = $(this);
-
-            $('#copy-box')
-                .val($btn.siblings('.name').text())
-                .select();
-            document.execCommand('copy');
-
-            $btn.addClass('copied').text('ok');
-            setTimeout(function(){
-                $btn.removeClass('copied').text('copy');
-            }, 750);
-        });
-    }
-
-    /**
-     *
-     */
-    function queryContentPage() {
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+        chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
             var tab = tabs[0];
 
-            chrome.tabs.sendMessage(tab.id, {text: REQUEST_TEXT}, function(response) {
-                console.log(response);
+            chrome.tabs.sendMessage(tab.id, {text: REQUEST_TEXT}, function (response) {
                 if (OK === validateResponse(response)) {
                     renderNames(response);
                 } else {
-                    errorNoData();
+                    errorNoData(tab);
                 }
             });
 
         });
+    };
 
+    function onCopyClick(e) {
+        var btn = e.target;
+
+        copyBox.value = btn.previousSibling.innerText;
+        copyBox.select();
+        document.execCommand('copy');
+
+        btn.classList.add('copied');
+        btn.innerText = 'ok';
+        setTimeout(function(){
+            btn.classList.remove('copied');
+            btn.innerText = 'copy';
+        }, 750);
     }
 
     function renderNames(list) {
         Feature.loadOptions(function(){
-            var formatted,
-                itemHtml,
-                i,
-                template = '<div class="entry">'
-                    + '<div class="name">%</div>'
-                    + '<div class="copy">Copy</div>'
-                    + '</div>';
+            var entryTemplate = document.createElement('div'),
+                entry;
 
-            console.log(list);
-            for (i = 0; i < list.length; i++) {
-                formatted = Feature.format(list[i]);
+            entryTemplate.className = "entry";
+            entryTemplate.innerHTML = '<div class="name"></div><div class="button copy">Copy</div>';
 
-                var $item = $('<div class="entry">'
-                    + '<div class="name"></div>'
-                    + '<div class="copy">Copy</div>'
-                    + '</div>');
-                $item.find('.name').text(formatted);
-                $('.container').append($item);
+            for (var i = 0; i < list.length; i++) {
+                entry = entryTemplate.cloneNode(true);
+                entry.childNodes[0].innerText = Feature.format(list[i]);
+                entry.childNodes[1].addEventListener('click', onCopyClick);
+                containerBlock.appendChild(entry);
             }
+
+            containerBlock.style.display = 'block';
         });
     }
 
-    /**
-     * @param {object} response
-     * @returns {Number}
-     */
     function validateResponse(response) {
         if (response && response.length) {
             return OK;
@@ -81,16 +71,17 @@ var JiraToFeature = function() {
         return EMPTY;
     }
 
-    function errorWrongVersion() {
-
+    function errorNoData(tab) {
+        errorBlock.style.display = 'block';
+        reloadButton.addEventListener('click', function(e){
+            chrome.tabs.update(tab.id, {url: tab.url}, function(){
+                window.close();
+            });
+        });
     }
-
-    function errorNoData() {
-
-    }
-
 };
 
 document.addEventListener("DOMContentLoaded", function() {
-    new JiraToFeature();
+    var app = new JiraToFeature();
+    app.init();
 });
