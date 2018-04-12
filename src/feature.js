@@ -1,11 +1,11 @@
 Feature = {
     options: {
-        keyCase: "lower",
+        keyCase: "upper",
         keyDelimiter: "-",
         delimiter: "-",
         summaryCase: "lower",
         summaryDelimiter: "-",
-        maxLength: 40
+        maxLength: 100
     },
 
     /**
