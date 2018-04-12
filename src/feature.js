@@ -66,6 +66,7 @@ Feature = {
         function clean(value) {
             value = value.replace(/['"]/g, '');
             value = value.replace(/\W/g, ' ');
+            value = value.replace(/^\s|\s$/g, ''); 
 
             return value;
         }
