@@ -26,6 +26,7 @@ body {
 
 .value {
     display: inline-block;
+    max-width: 122px;
 }
 
 .wide {

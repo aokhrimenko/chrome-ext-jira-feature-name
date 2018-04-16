@@ -5,7 +5,8 @@ Feature = {
         delimiter: "-",
         summaryCase: "lower",
         summaryDelimiter: "-",
-        maxLength: 100
+        maxLength: 100,
+        ignoredPattern: null
     },
 
     /**
@@ -23,10 +24,12 @@ Feature = {
             summary;
 
         index = source.indexOf(' ');
-        key = clean(source.slice(0, index));
+        key = ignore(source.slice(0, index), Feature.options.ignoredPattern);
+        key = clean(key);
         key = fixCase(key, Feature.options.keyCase, Feature.options.keyDelimiter);
 
-        summary = clean(source.slice(index + 1));
+        summary = ignore(source.slice(index + 1), Feature.options.ignoredPattern);
+        summary = clean(summary);
         summary = fixCase(summary, Feature.options.summaryCase, Feature.options.summaryDelimiter);
 
         if (key && summary) {
@@ -40,6 +43,16 @@ Feature = {
         }
 
         return result.slice(0, Feature.options.maxLength);
+        
+        function ignore(value, pattern) {
+
+            if(pattern != null && pattern != '') {
+                var regex = new RegExp(pattern, 'gi');
+                value = value.replace(regex, '');
+            }
+
+            return value;
+        }
 
         function fixCase(value, caseType, delimiter) {
             switch (caseType) {
